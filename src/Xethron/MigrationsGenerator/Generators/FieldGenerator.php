@@ -112,7 +112,7 @@ class FieldGenerator {
 					$index = null;
 				} else {
 					if ($column->getUnsigned()) {
-						$decorators[] = 'unsigned';
+                        $type = 'unsigned'.ucfirst($type);
 					}
 					if ($column->getAutoincrement()) {
 						$args = 'true';
