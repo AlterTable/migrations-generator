@@ -142,7 +142,7 @@ class FieldGenerator {
 				if ($type === 'string' && $column->getFixed()) {
 					$type = 'char';
 				}
-				$args = $this->getLength($length);
+				$args = $this->getLength($type, $length);
 			}
 
 			if ($nullable) $decorators[] = 'nullable';
@@ -159,14 +159,19 @@ class FieldGenerator {
 	}
 
 	/**
+     * @param string $type
 	 * @param int $length
 	 * @return int|void
 	 */
-	protected function getLength($length)
+	protected function getLength($type, $length)
 	{
-		if ($length and $length !== 255) {
+		if ($type === 'string' and $length and $length !== 255) {
 			return $length;
 		}
+
+		if ($type === 'text' and $length and $length !== 65535) {
+		    return $length;
+        }
 	}
 
 	/**
