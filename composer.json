@@ -19,11 +19,11 @@
         "php": ">=5.4.0",
         "illuminate/support": ">=4.1",
         "xethron/laravel-4-generators": "~3.1.0",
-        "doctrine/dbal": "~2.4"
+        "doctrine/dbal": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Xethron\\MigrationsGenerator": "src/"
+        "psr-4": {
+            "Xethron\\": "src/Xethron"
         }
     },
     "require-dev": {
