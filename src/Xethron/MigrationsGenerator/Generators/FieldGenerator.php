@@ -42,9 +42,11 @@ class FieldGenerator
 
         $indexGenerator = new IndexGenerator($table, $schema, $ignoreIndexNames);
         $fields = $this->setEnum($this->getFields($columns, $indexGenerator), $table);
+
+        $timestampIndexes = $this->getTimestampsIndexes($columns, $indexGenerator);
         $indexes = $this->getMultiFieldIndexes($indexGenerator);
 
-        return array_merge($fields, $indexes);
+        return array_merge($fields, $timestampIndexes, $indexes);
     }
 
     /**
@@ -250,6 +252,34 @@ class FieldGenerator
         } else {
             return $function;
         }
+    }
+
+    protected function getTimestampsIndexes($columns, IndexGenerator $indexGenerator)
+    {
+        $indexes = [];
+
+        foreach ($columns as $column) {
+            $name = $column->getName();
+
+            if ($name == 'created_at' || $name == 'updated_at') {
+                $index = $indexGenerator->getIndex($name);
+
+                if ($index) {
+                    $indexArray = [
+                        'field' => $name,
+                        'type'  => $index->type,
+                    ];
+
+                    if ($index->name) {
+                        $indexArray['args'] = $this->argsToString($index->name);
+                    }
+
+                    $indexes[] = $indexArray;
+                }
+            }
+        }
+
+        return $indexes;
     }
 
     /**
