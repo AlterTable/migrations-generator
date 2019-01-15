@@ -25,6 +25,13 @@ class FieldGenerator
      */
     protected $database;
 
+    protected $preferTimestamp;
+
+    public function __construct($preferTimestamp = false)
+    {
+        $this->preferTimestamp = $preferTimestamp;
+    }
+
     /**
      * Create array of all the fields for a table
      *
@@ -138,6 +145,10 @@ class FieldGenerator
                 } elseif ($name == 'updated_at' and isset($fields['created_at'])) {
                     $fields['created_at'] = ['field' => '', 'type' => 'timestamps'];
                     continue;
+                } else {
+                    if ($this->preferTimestamp) {
+                        $type = 'timestamp';
+                    }
                 }
             } elseif (in_array($type, ['decimal', 'float', 'double'])) {
                 // Precision based numbers
