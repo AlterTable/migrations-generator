@@ -155,6 +155,14 @@ class FieldGenerator
 
             if ($nullable) $decorators[] = 'nullable';
             if ($default !== null) $decorators[] = $this->getDefault($default, $type);
+
+            if ($column->hasPlatformOption('charset') && $column->getPlatformOption('charset') !== 'utf8mb4') {
+                $decorators[] = "charset('".$column->getPlatformOption('charset')."')";
+            }
+            if ($column->hasPlatformOption('collation') && $column->getPlatformOption('collation') !== 'utf8mb4_unicode_ci') {
+                $decorators[] = "collate('".$column->getPlatformOption('collation')."')";
+            }
+
             if ($index) $decorators[] = $this->decorate($index->type, $index->name);
             if ($comment) $decorators[] = "comment('".addcslashes($comment, "\\'")."')";
 
