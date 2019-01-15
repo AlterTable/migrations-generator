@@ -160,7 +160,8 @@ class MigrateGenerateCommand extends GeneratorCommand
         $this->schemaGenerator = new SchemaGenerator(
             $this->option('connection'),
             $this->option('defaultIndexNames'),
-            $this->option('defaultFKNames')
+            $this->option('defaultFKNames'),
+            $this->option('preferTimestamp')
         );
 
         if ($this->argument('tables')) {
@@ -381,6 +382,7 @@ class MigrateGenerateCommand extends GeneratorCommand
             ['templatePath', 'tp', InputOption::VALUE_OPTIONAL, 'The location of the template for this generator'],
             ['defaultIndexNames', null, InputOption::VALUE_NONE, 'Don\'t use db index names for migrations'],
             ['defaultFKNames', null, InputOption::VALUE_NONE, 'Don\'t use db foreign key names for migrations'],
+            ['preferTimestamp', null, InputOption::VALUE_NONE, 'Prefer generate timestamp or dateTime(default) for dateTime columns.'],
         ];
     }
 
